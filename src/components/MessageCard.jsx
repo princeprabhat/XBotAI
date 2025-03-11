@@ -121,7 +121,7 @@ const MessageCard = ({
             />
           )}
         </Stack>
-        {isAnswerCard && isHistoryCard && (
+        {data.feedback && isAnswerCard && isHistoryCard && (
           <Typography
             fontFamily={"Open Sans"}
             fontSize={"1rem"}
