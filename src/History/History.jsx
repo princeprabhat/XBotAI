@@ -5,10 +5,13 @@ import Navbar from "../components/Navbar";
 import InputMessage from "../components/InputMessage";
 import MessageCard from "../components/MessageCard";
 import { useNavigate } from "react-router-dom";
-
+const RATING = [0, 1, 2, 3, 4, 5];
 const History = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [chatData, setChatData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [filterRating, setFilterRating] = useState(null);
+
   const navigate = useNavigate();
   const handleNavigate = (e) => {
     e.preventDefault();
@@ -16,10 +19,19 @@ const History = () => {
   };
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("chat-data"));
+    if (filterRating < 0 || filterRating > 5) {
+      setFilteredData(chatData);
+      return;
+    }
+    setFilteredData(chatData.filter((item, id) => item.rating == filterRating));
+  }, [filterRating]);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("chat-data")) || [];
     setChatData(data);
+    setFilteredData(data);
   }, []);
-  console.log(chatData);
+
   return (
     <Box display={"flex"} height={"100vh"}>
       <Sidebar isOpen={isSideBarOpen} />
@@ -53,11 +65,32 @@ const History = () => {
             "&::-webkit-scrollbar": { display: "none" },
           }}
         >
-          {chatData &&
-            chatData.map((el, idx) => {
+          {chatData.length > 0 && (
+            <Box>
+              <select
+                name="rating-dropdown"
+                id="rating-dropdown"
+                style={{ minWidth: "10rem", marginLeft: "1rem" }}
+                onChange={(e) => setFilterRating(e.target.value)}
+              >
+                <option value="" key={Date.now()}>
+                  Filter
+                </option>
+                {RATING.map((el, idx) => {
+                  return (
+                    <option key={idx} value={el}>
+                      {el}
+                    </option>
+                  );
+                })}
+              </select>
+            </Box>
+          )}
+          {filteredData &&
+            filteredData.map((el, idx) => {
               return (
                 <Box
-                  key={el.chatId}
+                  key={el.chatId + String(Date.now())}
                   display={"flex"}
                   flexDirection={"column"}
                   flex={"1"}
@@ -74,7 +107,7 @@ const History = () => {
               );
             })}
         </Box>
-        <InputMessage handleAsk={handleNavigate} />
+        <InputMessage handleAsk={handleNavigate} isHistoryInput />
       </Box>
     </Box>
   );

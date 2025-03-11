@@ -19,6 +19,7 @@ const Navbar = ({ setIsSideBarOpen, isSideBarOpen, isCustomNavbar }) => {
       {!isCustomNavbar && (
         <Typography
           color="rgba(151, 133, 186, 1)"
+          component={"header"}
           fontFamily="Ubuntu"
           fontWeight="700"
           fontSize="1.75rem"

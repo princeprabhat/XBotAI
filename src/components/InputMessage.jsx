@@ -18,6 +18,7 @@ const InputMessage = ({
   handleAsk,
   inputMessage,
   setInputMessage,
+  isHistoryInput,
 }) => {
   return (
     <form onSubmit={handleAsk}>
@@ -34,7 +35,7 @@ const InputMessage = ({
             flex: "1",
           }}
           value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
+          onChange={(e) => !isHistoryInput && setInputMessage(e.target.value)}
         />
         <Button
           variant="contained"

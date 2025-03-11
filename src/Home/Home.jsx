@@ -116,7 +116,10 @@ const Home = () => {
   };
 
   const handleSave = () => {
+    const lsData = JSON.parse(localStorage.getItem("chat-data")) || [];
     localStorage.setItem("chat-data", JSON.stringify(messageData));
+    // TODO: Need to add a snackbar to show the saved message
+    // alert("Messages has been saved");
   };
 
   const handleAsk = (e) => {
@@ -151,7 +154,7 @@ const Home = () => {
 
     return () => clearTimeout(time);
   };
-  console.log(messageData);
+
   return (
     <Box display={"flex"} height={"100vh"}>
       <Sidebar isOpen={isSideBarOpen} setMessageData={setMessageData} />
